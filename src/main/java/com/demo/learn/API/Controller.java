@@ -4,10 +4,7 @@ package com.demo.learn.API;
 import com.demo.learn.DTO.Product;
 import com.demo.learn.DTO.ProductRecord;
 import com.demo.learn.DTO.Rating;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -71,14 +68,21 @@ public class Controller {
         return product;
     }
 
-    @GetMapping("/product")
-    public ProductRecord getProductRecord() {
-        return Service.getProduct();
-    }
-
     @GetMapping("/products")
     public List<ProductRecord> getAllProducts() {
         return Service.getAllProducts();
+    }
+
+    @GetMapping("/product/{id}")
+    public ProductRecord getProduct(@PathVariable(name = "id") Integer productId) {
+        System.out.println("Product Id :: "+productId);
+        ProductRecord product = Service.getProduct(productId);
+
+        if(product == null) {
+            throw new RuntimeException("Product Not Found");
+        }
+
+        return product;
     }
 
 
